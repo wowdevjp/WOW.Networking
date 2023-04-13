@@ -8,16 +8,21 @@ namespace WOW.Threading
 {
     public static class FireAndForget
     {
-        public static void Forget(this Task task, Action<System.Exception> exception = null)
+        public static async void ForgetWithExceptionAsync(this Task task, Action<System.Exception> exception = null)
         {
             try
             {
-                var _ = task;
+                await task;
             }
             catch(Exception e)
             {
                 exception?.Invoke(e);
             }
+        }
+
+        public static void Forget(this Task task, Action<System.Exception> exception = null)
+        {
+            task.ForgetWithExceptionAsync(exception);
         }
     }
 }
