@@ -19,6 +19,7 @@ namespace WOW.Threading
         private static MainThreadRunner instance = null;
         private static int mainThreadId = 0;
         private static Queue<Action> actionQueue = new Queue<Action>();
+        private static Action loopAction = null;
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void InitializeOnLoad()
@@ -32,12 +33,26 @@ namespace WOW.Threading
         }
 
         /// <summary>
-        /// Add main thread action.
+        /// Add a main thread action.
         /// </summary>
         /// <param name="action"></param>
         public static void AddAction(Action action)
         {
             actionQueue.Enqueue(action);
+        }
+
+        /// <summary>
+        /// Add a loop action.
+        /// </summary>
+        /// <param name="action"></param>
+        public static void AddLoopAction(Action action)
+        {
+            loopAction += action;
+        }
+
+        public static void RemoveLoopAction(Action action)
+        {
+            loopAction -= action;
         }
 
         private void Awake()
@@ -56,6 +71,8 @@ namespace WOW.Threading
                 Action action = actionQueue.Dequeue();
                 action?.Invoke();
             }
+
+            loopAction?.Invoke();
         }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
@@ -20,6 +21,11 @@ namespace WOW.Threading
         public static AwaitableMainThread SwitchToMainThread(CancellationToken cancellationToken)
         {
             return new AwaitableMainThread(cancellationToken);
+        }
+
+        public static AwaitableWaitUntil WaitUntil(Func<bool> predictor, CancellationToken cancellationToken = default)
+        {
+            return new AwaitableWaitUntil(predictor, cancellationToken);
         }
     }
 }
