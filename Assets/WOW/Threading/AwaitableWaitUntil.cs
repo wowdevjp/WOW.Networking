@@ -46,10 +46,17 @@ namespace WOW.Threading
             {
                 while(true)
                 {
-                    isCompleted = predictor();
-                    if(isCompleted)
+                    try
                     {
-                        break;
+                        isCompleted = predictor();
+                        if (isCompleted)
+                        {
+                            break;
+                        }
+                    }
+                    catch(Exception e)
+                    {
+                        Debug.LogException(e);
                     }
                 }
 

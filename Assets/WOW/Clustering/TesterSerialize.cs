@@ -1,7 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 using WOW.Clustering;
+using WOW.Threading;
 
 public struct TestMessage : IMessage
 {
@@ -9,7 +12,6 @@ public struct TestMessage : IMessage
     public double DoubleNumber;
     public bool IsBool;
     public string Message;
-    public byte[] Binary;
 
     public void Serialize(ISerializer serializer)
     {
@@ -17,14 +19,23 @@ public struct TestMessage : IMessage
         serializer.Serialize(ref DoubleNumber);
         serializer.Serialize(ref IsBool);
         serializer.Serialize(ref Message);
-        serializer.Serialize(ref Binary);
     }
 }
 
 
-public class TesterSerialize : Node<TestMessage>
+public class TesterSerialize : Node<TestMessage, TestMessage>
 {
-
+    protected override async Task<TestMessage> ProcessRequest(TestMessage request)
+    {
+        await MiniTask.SwitchToMainThread();
+        int randomNumber = Random.Range(100, 500);
+        Debug.Log("Randoom: " + randomNumber);
+        await MiniTask.SwitchToThreadPool();
+        await Task.Delay(randomNumber);
+        var newMessage = request;
+        newMessage.Message = request.Message.Replace("a", "!");
+        return newMessage;
+    }
 }
 
 //public class TesterSerialize : MonoBehaviour

@@ -40,11 +40,15 @@ namespace WOW.Clustering
                 int length = reader.ReadInt32();
                 value = (T)(object)reader.ReadBytes(length); 
             }
+            else if (valueType.IsEnum)
+            {
+                reader.ReadInt32();
+                value = (T)(object)reader.ReadInt32();
+            }
             else if (valueType == typeof(int))
             {
                 reader.ReadInt32();
                 value = (T)(object)reader.ReadInt32();
-                Debug.Log(value);
             }
             else if (valueType == typeof(double))
             {
@@ -84,6 +88,11 @@ namespace WOW.Clustering
             if(valueType == typeof(byte[]))
             {
                 bytes.Add((byte[])(object)value);
+            }
+            else if(valueType.IsEnum)
+            {
+                var integerBytes = BitConverter.GetBytes((int)(object)value);
+                bytes.Add(integerBytes);
             }
             else if(valueType == typeof(int))
             {
