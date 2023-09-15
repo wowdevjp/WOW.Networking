@@ -1,0 +1,8 @@
+{
+    "name": "jp.co.w0w.wow.networking",
+    "displayName": "WOW.Networking",
+    "description": "Unity package for network communications.",
+    "author": "WOW Inc.(R&D)",
+    "version": "1.0.0",
+    "unity": "2021.3"
+}
