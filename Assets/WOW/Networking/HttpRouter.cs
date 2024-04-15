@@ -9,8 +9,6 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
-using UnityEditor.PackageManager;
-using UnityEngine.Analytics;
 
 namespace WOW.Networking
 {
